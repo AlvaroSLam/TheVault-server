@@ -1,7 +1,7 @@
 const {isLoggedIn} = require('../helpers/auth-helper');
 const router = require('.');
 const bcrypt = require('bcryptjs');
-//Import model HERE
+const ProfileModel = require ('../models/profile.model')
 const { isLoggedIn } = require('../helpers/auth-helper'); // to check if user is loggedIn
 
 //---------------------SIGNUP--------------------//
@@ -44,7 +44,7 @@ router.post('/signup', (req, res) => {
       console.log('Salt: ', salt);
       bcrypt.hash(password, salt)
         .then((passwordHash) => {
-          UserModel.create({email, username, passwordHash})
+          ProfileModel.create({email, username, passwordHash})
             .then((user) => {
               user.passwordHash = "***";
               req.session.loggedInUser = user;
@@ -98,7 +98,7 @@ router.post('/signin', (req, res) => {
   }
 
   // Find if the user exists in the database 
-  UserModel.findOne({email})
+  ProfileModel.findOne({email})
     .then((userData) => {
          //check if passwords match
         bcrypt.compare(password, userData.passwordHash)

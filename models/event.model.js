@@ -16,16 +16,22 @@ let EventSchema = new mongoose.Schema({
       required: true
     },
 
+    state: {
+      type: String
+    },
+
     image: {
       type: String,
       default: ''
     },
 
+    //object ID
     created_by:{
-      type: String
+      type: mongoose.Schema.Types.ObjectId,
+      ref: ProfileModel,
     }
 })
 
-let eventModel = mongoose.model('todo', EventSchema)
+let EventModel = mongoose.model('todo', EventSchema)
 
-module.exports = eventModel;
+module.exports = EventModel;

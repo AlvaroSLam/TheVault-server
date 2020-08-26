@@ -16,16 +16,18 @@ let VaultSchema = new mongoose.Schema({
       enum: ["Video", "Img", "Text", "Audio"]
     },
 
-    fileData: {
+    //URL Cloudinary
+    fileUrl: {
       type: String,
       default: ''
     },
 
     created_by:{
-      type: String
+      type: mongoose.Schema.Types.ObjectId,
+      ref: ProfileModel,
     }
 })
 
-let vaultModel = mongoose.model('todo', VaultSchema)
+let VaultModel = mongoose.model('todo', VaultSchema)
 
-module.exports = vaultModel;
+module.exports = VaultModel;

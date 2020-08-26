@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 
-let ProfileSchema = new mongoose.Schema({
+let ProfileSchema = new mongoose.Schema(
+  {
     username:{
       type: String,
       required: true
@@ -11,10 +12,15 @@ let ProfileSchema = new mongoose.Schema({
       required: true
     },
 
-    mail: {
+    email: {
       type: String,
       required: true,
       unique: true
+    },
+    
+    passwordHash: {
+      type: String,
+      required: true
     },
 
     description:{
@@ -26,7 +32,7 @@ let ProfileSchema = new mongoose.Schema({
       default: ''
     },
 
-    learn_keywords: [{
+    wantToLearn_keywords: [{
       type: String
     }],
 
@@ -34,21 +40,35 @@ let ProfileSchema = new mongoose.Schema({
       type: String
     }],
 
-    events: {
-      type: String
-    },
+    joinEvents: [{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: EventModel,
+    }],
 
-    vault: {
-      type: String
-    },
+    favVault: [{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: VaultModel
 
-    follow: {
-      type: String
-    },
-})
+    }],
 
-let profileModel = mongoose.model('todo', ProfileSchema)
+    follow: [{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: ProfileModel
 
-module.exports = profileModel;
+    }],
+},
+  {
+  timestamps: true
+  }
+
+)
+
+ProfileSchema.index({ 'email': 1}, {unique: true});
+ProfileSchema.index({ 'username': 1}, {unique: true});
+module.exports = model('User', userSchema);
+
+let ProfileModel = mongoose.model('User', ProfileSchema)
+
+module.exports = ProfileModel;
 
 
