@@ -20,6 +20,11 @@ let VaultSchema = new mongoose.Schema({
     fileUrl: {
       type: String,
       default: ''
+    },  
+    
+    keywords:{
+      type:String,
+      default:'#general'
     },
 
     created_by:{
@@ -28,6 +33,6 @@ let VaultSchema = new mongoose.Schema({
     }
 })
 
-let VaultModel = mongoose.model('todo', VaultSchema)
+let VaultModel = mongoose.model('Vault', VaultSchema)
 
 module.exports = VaultModel;

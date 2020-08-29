@@ -1,41 +1,80 @@
 const express = require('express')
 const router = express.Router()
-let ProfileModel = require('../models/profile.model')
-let EventModel = require('')
-const { isLoggedIn } = require('../helpers/auth-helper');// to check if user is loggedIn
+const { isLoggedIn } = require('../helpers/auth-helper'); // to check if user is loggedIn
+const ProfileModel = require('../models/profile.model');
 
-//------------USER ROUTES---------
-router.get('/api/user/:id', (req, res) =>{
-  ProfileModel.find()
-    .then((user) => {
-      res.status(200).json(user)
-    })
-    .catch((err)=>{
-      res.status(500).json({
-        error: 'Something went wrong',
-        message: err
-    })
-  })         
-})
 
-router.patch('/api/user/:id/edit', (req, res) => {
-  let id = req.params.id
-  //WHAT DO WE WANT TO CHANGE
-  const {username, secondname, mail, description, image} = req.body;
-  ProfileModel.findByIdAndUpdate(id, {$set: {username: username, secondname: secondname, mail: mail, description: description, image: image}})
-          .then((response) => {
-               res.status(200).json(response)
+
+router.get("/profile", isLoggedIn, (req, res, next) => {
+     ProfileModel.findById(req.session.loggedInUser._id)
+     .then((response) => {
+          res.status(200).json(response)
+     })
+     .catch((err) => {
+          console.log(err)
+          res.status(500).json({
+               error: 'Something went wrong',
+               message: err
           })
-          .catch((err) => {
-               console.log(err)
-               res.status(500).json({
-                    error: 'Something went wrong',
-                    message: err
+     })
+   });
+
+router.patch('/profile/edit', isLoggedIn, (req, res) => {
+     
+     const {username, email, secondname, description, image, wantToLearns, howToKnows, joinEvents, favVault, follow} = req.body.userInfo;
+     ProfileModel.findByIdAndUpdate(req.session.loggedInUser._id, {$set: {username: username, email: email, secondname: secondname, description: description, image: image, wantToLearns: wantToLearns, howToKnows: howToKnows, joinEvents: joinEvents, favVault: favVault, follow: follow}})
+           .then((response) => {
+                res.status(200).json(response)
+           })
+           .catch((err) => {
+                console.log(err)
+                res.status(500).json({
+                     error: 'Something went wrong',
+                     message: err
+                })
+           }) 
+ })
+
+ 
+router.patch('/profile/event/join', isLoggedIn, (req, res) => {
+     
+     const {eventId} = req.body;
+     console.log(req.body)
+      ProfileModel.findByIdAndUpdate(req.session.loggedInUser._id, {$push:{joinEvents:eventId }} )
+            .then((response) => {
+               ProfileModel.findById(req.session.loggedInUser._id)
+                    .then((user) => {
+                         req.session.loggedInUser = user
+                         res.status(200).json(response)
+                    })
+               
+            })
+            .catch((err) => {
+                 console.log(err)
+                 res.status(500).json({
+                      error: 'Something went wrong',
+                      message: err
+                 })
+            }) 
+ })
+ router.patch('/profile/event/unjoin', isLoggedIn, (req, res) => {
+      
+      const {eventId} = req.body;
+      ProfileModel.findByIdAndUpdate(req.session.loggedInUser._id,  {$pull:{joinEvents:eventId }} )
+            .then((response) => {
+               ProfileModel.findById(req.session.loggedInUser._id)
+               .then((user) => {
+                    req.session.loggedInUser = user
+                    res.status(200).json(response)
                })
-          }) 
+            })
+            .catch((err) => {
+                 console.log(err)
+                 res.status(500).json({
+                      error: 'Something went wrong',
+                      message: err
+                 })
+            }) 
+  })
 
-})
-
-router.post('/api/user/:id/events/add', (req, res)=>{
-
-})
+module.exports = router;

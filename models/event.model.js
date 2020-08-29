@@ -24,14 +24,17 @@ let EventSchema = new mongoose.Schema({
       type: String,
       default: ''
     },
-
+    keywords:[{
+      type:String,
+      default:'#general'
+    }],
     //object ID
     created_by:{
       type: mongoose.Schema.Types.ObjectId,
-      ref: ProfileModel,
+      ref: "User"
     }
 })
 
-let EventModel = mongoose.model('todo', EventSchema)
+let EventModel = mongoose.model('Event', EventSchema)
 
 module.exports = EventModel;

@@ -9,7 +9,6 @@ let ProfileSchema = new mongoose.Schema(
 
     secondname:{
       type: String,
-      required: true
     },
 
     email: {
@@ -32,28 +31,28 @@ let ProfileSchema = new mongoose.Schema(
       default: ''
     },
 
-    wantToLearn_keywords: [{
+    wantToLearns: [{
       type: String
     }],
 
-    teach_keywords: [{
+    howToKnows: [{
       type: String
     }],
 
     joinEvents: [{
       type: mongoose.Schema.Types.ObjectId,
-      ref: EventModel,
+      ref: "Event"
     }],
 
     favVault: [{
       type: mongoose.Schema.Types.ObjectId,
-      ref: VaultModel
+      ref: "Vault"
 
     }],
 
     follow: [{
       type: mongoose.Schema.Types.ObjectId,
-      ref: ProfileModel
+      ref: "user"
 
     }],
 },
@@ -65,10 +64,6 @@ let ProfileSchema = new mongoose.Schema(
 
 ProfileSchema.index({ 'email': 1}, {unique: true});
 ProfileSchema.index({ 'username': 1}, {unique: true});
-module.exports = model('User', userSchema);
-
-let ProfileModel = mongoose.model('User', ProfileSchema)
-
-module.exports = ProfileModel;
+module.exports = mongoose.model('user', ProfileSchema);
 
 
