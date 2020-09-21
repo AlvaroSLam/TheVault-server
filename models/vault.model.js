@@ -17,19 +17,18 @@ let VaultSchema = new mongoose.Schema({
     },
 
     //URL Cloudinary
-    fileUrl: {
+    fileUrl: [{
       type: String,
-      default: ''
-    },  
+    }],  
     
-    keywords:{
+    keywords:[{
       type:String,
-      default:'#general'
-    },
+      default:'general'
+    }],
 
     created_by:{
       type: mongoose.Schema.Types.ObjectId,
-      ref: ProfileModel,
+      ref: 'user',
     }
 })
 

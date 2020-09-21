@@ -28,7 +28,8 @@ let ProfileSchema = new mongoose.Schema(
 
     image: {
       type: String,
-      default: ''
+      default: 'https://res.cloudinary.com/dzzpwrdae/image/upload/v1598876090/userDefault_sapdhp.jpg',
+      required: true
     },
 
     wantToLearns: [{
@@ -47,7 +48,6 @@ let ProfileSchema = new mongoose.Schema(
     favVault: [{
       type: mongoose.Schema.Types.ObjectId,
       ref: "Vault"
-
     }],
 
     follow: [{
@@ -59,7 +59,6 @@ let ProfileSchema = new mongoose.Schema(
   {
   timestamps: true
   }
-
 )
 
 ProfileSchema.index({ 'email': 1}, {unique: true});

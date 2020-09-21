@@ -7,6 +7,7 @@ const ProfileModel = require('../models/profile.model');
 
 router.get("/events", isLoggedIn, (req, res, next) => {
   EventModel.find()
+   .populate('created_by')
   .then((response) => {
        res.status(200).json(response)
   })
@@ -21,9 +22,18 @@ router.get("/events", isLoggedIn, (req, res, next) => {
 
 
 router.post("/addEvent", isLoggedIn, (req, res, next) => {
-const{ title,description,date,imageUrl,keywords } = req.body.eventDetails;
+const{ title,description,date,image,keywords,location } = req.body.eventDetails;
 console.log(req.body)
-  EventModel.create({title,description,date,imageUrl,keywords, created_by: req.session.loggedInUser._id})
+
+if ( !description || !title) {
+     res.status(500)
+       .json({
+         errorMessage: 'Please enter title, description and image'
+       });
+     return;  
+ }
+ 
+  EventModel.create({title,description,date,image,keywords,location, created_by: req.session.loggedInUser._id})
      .then((response) => {
           res.status(200).json(response)
      })

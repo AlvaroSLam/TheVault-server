@@ -1,4 +1,5 @@
 {
   "editor.tabSize": 2,
-  "workbench.preferredDarkColorTheme": "Abyss"
+  "workbench.preferredDarkColorTheme": "Abyss",
+  "editor.fontSize": 18
 }

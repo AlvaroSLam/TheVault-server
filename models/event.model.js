@@ -16,22 +16,24 @@ let EventSchema = new mongoose.Schema({
       required: true
     },
 
-    state: {
-      type: String
+    location: {
+      type: String,
     },
 
     image: {
       type: String,
-      default: ''
+      default: 'https://res.cloudinary.com/dzzpwrdae/image/upload/v1598875942/eventDefault_t9wpe7.png',
+      required: true
     },
+
     keywords:[{
       type:String,
-      default:'#general'
+      default:'general'
     }],
     //object ID
     created_by:{
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User"
+      ref: "user"
     }
 })
 
